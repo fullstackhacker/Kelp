@@ -10,11 +10,42 @@ import UIKit
 
 class BusinessTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var businessImageView: UIImageView!
+    @IBOutlet weak var reviewImageView: UIImageView!
+    @IBOutlet weak var businessNameLabel: UILabel!
+    @IBOutlet weak var addrssLabel: UILabel!
+    @IBOutlet weak var reviewLabel: UILabel!
+    @IBOutlet weak var typeLabel: UILabel!
+    @IBOutlet weak var distanceLabel: UILabel!
+    
+    var business: Business! {
+        didSet {
+            self.businessNameLabel.text = business.name
+            self.businessImageView.setImageWith(business.imageURL!)
+            self.typeLabel.text = business.categories
+            self.addrssLabel.text = business.address
+            self.reviewLabel.text = "\(business.reviewCount!) reviews"
+            self.reviewImageView.setImageWith(business.ratingImageURL!)
+            self.distanceLabel.text = business.distance
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        self.businessImageView.layer.cornerRadius = 3
+        self.businessImageView.clipsToBounds = true
+        self.businessNameLabel.preferredMaxLayoutWidth = businessNameLabel.frame.size.width
     }
 
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.businessNameLabel.preferredMaxLayoutWidth = businessNameLabel.frame.size.width
+
+    }
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
