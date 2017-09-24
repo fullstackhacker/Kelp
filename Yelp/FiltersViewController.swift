@@ -342,7 +342,7 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource{
             return cell
         }
         else if sections[indexPath.section] == FiltersSections.Sort {
-            let cell = self.categoriesTableView.dequeueReusableCell(withIdentifier: "DistanceCell") as! SortTableViewCell
+            let cell = self.categoriesTableView.dequeueReusableCell(withIdentifier: "SortCell") as! SortTableViewCell
             if sortDropDownOpen {
                 cell.sort = self.sorts[indexPath.row]
             }

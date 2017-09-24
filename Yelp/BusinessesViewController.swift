@@ -114,7 +114,10 @@ extension BusinessesViewController: FiltersViewControllerDelegate {
         let distance = self.filterState["distance"] as! Int
         
         // get sorts
-        let sort = self.filterState["sort"] as! YelpSortMode
+        let yelpSortModes = [YelpSortMode.bestMatched,
+                             YelpSortMode.distance,
+                             YelpSortMode.highestRated]
+        let sort = yelpSortModes[self.filterState["sort"] as? Int ?? 0]
         
         Business.searchWithTerm(term: "Restaurants", sort: sort, categories: categories, deals: dealsOnly, distance: distance) { (businesses, error) in
             self.businesses = businesses ?? [Business]()
