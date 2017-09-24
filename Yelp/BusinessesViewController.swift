@@ -30,7 +30,7 @@ class BusinessesViewController: UIViewController {
         businessTableView.rowHeight = UITableViewAutomaticDimension
         businessTableView.estimatedRowHeight = 120
         
-        Business.searchWithTerm(term: "Thai", completion: { (businesses: [Business]?, error: Error?) -> Void in
+        Business.searchWithTerm(term: "", completion: { (businesses: [Business]?, error: Error?) -> Void in
             
             self.businesses = businesses
             if let businesses = businesses {
