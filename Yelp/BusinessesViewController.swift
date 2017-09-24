@@ -12,6 +12,7 @@ class BusinessesViewController: UIViewController {
     
     var businesses: [Business]! = []
     var filterState: [String:AnyObject]! = [String:AnyObject]()
+    var loadingMoreData = false
     
     @IBOutlet weak var businessTableView: UITableView!
     
@@ -100,14 +101,23 @@ class BusinessesViewController: UIViewController {
         // get distance
         let distance = self.filterState["distance"] as? Int ?? 3
         
+        // get offset
+        let offset  = self.filterState["offset"] as? Int ?? nil
+        
         // get sorts
         let yelpSortModes = [YelpSortMode.bestMatched,
                              YelpSortMode.distance,
                              YelpSortMode.highestRated]
         let sort = yelpSortModes[self.filterState["sort"] as? Int ?? 0]
         
-        Business.searchWithTerm(term: searchTerm, sort: sort, categories: categories, deals: dealsOnly, distance: distance) { (businesses, error) in
-            self.businesses = businesses ?? [Business]()
+        Business.searchWithTerm(term: searchTerm, sort: sort, categories: categories, deals: dealsOnly, distance: distance, offset: offset) { (businesses, error) in
+            if offset != nil {
+                self.businesses = self.businesses + businesses!
+            }
+            else {
+                self.businesses = businesses ?? [Business]()
+            }
+            self.loadingMoreData = false
             self.businessTableView.reloadData()
         }
     }
@@ -152,5 +162,20 @@ extension BusinessesViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.endEditing(true)
         searchBar.showsCancelButton = false
+    }
+}
+
+extension BusinessesViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if !self.loadingMoreData {
+            let reloadThreshold = self.businessTableView.contentSize.height / 2
+            
+            if scrollView.contentOffset.y > reloadThreshold && scrollView.isDragging {
+                self.loadingMoreData = true
+                self.filterState["offset"] = self.businesses.count as AnyObject
+                self.reloadSearch()
+            }
+            
+        }
     }
 }

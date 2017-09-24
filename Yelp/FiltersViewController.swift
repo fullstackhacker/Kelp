@@ -80,6 +80,9 @@ class FiltersViewController: UIViewController {
         // add sorts filter
         updatedFilters["sort"] = self.currentSortSelectionIndex as AnyObject
         
+        // reset offset
+        updatedFilters["offset"] = nil
+
         delegate?.filtersViewController?(filterViewController: self, didUpdateFilters: updatedFilters)
     }
 
