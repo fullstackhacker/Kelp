@@ -182,6 +182,7 @@
                                                 </switch>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="UVH-jQ-KSX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sEa-GI-VGT" secondAttribute="trailing" constant="50" id="2bx-H6-nR1"/>
                                                 <constraint firstItem="sEa-GI-VGT" firstAttribute="leading" secondItem="2es-80-cJY" secondAttribute="leading" constant="25" id="A1f-7h-oSm"/>
                                                 <constraint firstItem="sEa-GI-VGT" firstAttribute="centerY" secondItem="2es-80-cJY" secondAttribute="centerY" id="FfL-sy-1a6"/>
                                                 <constraint firstAttribute="trailing" secondItem="UVH-jQ-KSX" secondAttribute="trailing" constant="25" id="eSK-dU-Cor"/>
@@ -193,15 +194,15 @@
                                             <outlet property="switchNameLabel" destination="sEa-GI-VGT" id="Y5g-uV-ASy"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ShowMoreCell" rowHeight="65" id="7Mz-Qg-en7" customClass="ShowMoreTableViewCell" customModule="Yelp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="86" width="375" height="65"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ShowMoreCell" rowHeight="61" id="7Mz-Qg-en7" customClass="ShowMoreTableViewCell" customModule="Yelp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="86" width="375" height="61"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7Mz-Qg-en7" id="ySq-6v-JiK">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="64.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show More" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JZl-3t-W7b">
-                                                    <rect key="frame" x="144.5" y="22" width="86" height="21"/>
+                                                    <rect key="frame" x="144.5" y="20" width="86" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -214,6 +215,30 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="showTextLabel" destination="JZl-3t-W7b" id="x9c-0q-fia"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DistanceCell" rowHeight="62" id="wuJ-6f-SQL" customClass="DistanceTableViewCell" customModule="Yelp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="147" width="375" height="62"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wuJ-6f-SQL" id="oh9-EK-kGQ" customClass="DistanceTableViewCell" customModule="Yelp" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="61.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hpt-cY-Iyh">
+                                                    <rect key="frame" x="141.5" y="16" width="91.5" height="29"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="hpt-cY-Iyh" firstAttribute="centerY" secondItem="oh9-EK-kGQ" secondAttribute="centerY" id="3JF-Hj-7wy"/>
+                                                <constraint firstItem="hpt-cY-Iyh" firstAttribute="centerX" secondItem="oh9-EK-kGQ" secondAttribute="centerX" id="LSM-fL-y4g"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="distanceCellView" destination="oh9-EK-kGQ" id="Un0-XW-hs3"/>
+                                            <outlet property="distanceTextLabel" destination="hpt-cY-Iyh" id="BhQ-UU-2pt"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

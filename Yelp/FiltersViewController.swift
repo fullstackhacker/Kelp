@@ -25,11 +25,11 @@ class FiltersViewController: UIViewController {
     
     weak var delegate: FiltersViewControllerDelegate?
     
-    let sections: [FiltersSections] = [.Categories,
-                                       .Sort,
+    let sections: [FiltersSections] = [.Sort,
                                        .Distance,
-                                       .Deals]
-    // deal related prfs
+                                       .Deals,
+                                       .Categories]
+    // deal related prefs
     var deal: Bool = false
     
     // category related prefs
@@ -37,7 +37,13 @@ class FiltersViewController: UIViewController {
     var showingAllCategories = false
     var categories: [Category] = []
     var categoryStates: [String: Bool] = [String: Bool]()
-
+    
+    
+    // distance related prefs
+    var distances: [Int] = [3, 5, 10, 25]
+    var currentDistance: Int = 3
+    var distanceDropDownOpen: Bool = false
+    
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,6 +70,9 @@ class FiltersViewController: UIViewController {
         
         // add deal filter
         updatedFilters["deal"] = self.deal as AnyObject
+        
+        // add distance filter
+        updatedFilters["distance"] = self.currentDistance as AnyObject
 
         delegate?.filtersViewController?(filterViewController: self, didUpdateFilters: updatedFilters)
     }
@@ -265,6 +274,14 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource{
         if sections[section] == FiltersSections.Deals {
             return 1
         }
+        if sections[section] == .Distance {
+            if distanceDropDownOpen {
+                return distances.count
+            }
+            else {
+                return 1
+            }
+        }
         return 0
     }
     
@@ -300,6 +317,18 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource{
             cell.delegate = self
             return cell
         }
+        else if sections[indexPath.section] == FiltersSections.Distance {
+            let cell = self.categoriesTableView.dequeueReusableCell(withIdentifier: "DistanceCell") as! DistanceTableViewCell
+            if distanceDropDownOpen {
+                cell.distance = self.distances[indexPath.row]
+                cell.currentlySelected = self.currentDistance == cell.distance
+            }
+            else {
+                cell.distance = self.currentDistance
+                cell.currentlySelected = false
+            }
+            return cell
+        }
         
         return UITableViewCell()
     }
@@ -313,9 +342,15 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource{
                     count = categories.count
                 }
                 displayedCategories = categories.prefix(count)
-                categoriesTableView.reloadData()
             }
         }
+        if sections[indexPath.section] == .Distance {
+            distanceDropDownOpen = !distanceDropDownOpen
+            if !distanceDropDownOpen { // picked a new one
+                self.currentDistance = self.distances[indexPath.row]
+            }
+        }
+        categoriesTableView.reloadData()
     }
 }
 

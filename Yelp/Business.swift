@@ -88,7 +88,18 @@ class Business: NSObject {
         _ = YelpClient.sharedInstance.searchWithTerm(term, completion: completion)
     }
     
-    class func searchWithTerm(term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, completion: @escaping ([Business]?, Error?) -> Void) -> Void {
-        _ = YelpClient.sharedInstance.searchWithTerm(term, sort: sort, categories: categories, deals: deals, completion: completion)
+    class func searchWithTerm(term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, distance: Int?, completion: @escaping ([Business]?, Error?) -> Void) -> Void {
+        var distanceInMeters = 0
+        if distance != nil {
+            distanceInMeters = distance! * 1609  // distance in meters.. client doesn't support this?
+        }
+
+        if distanceInMeters > 40000 {   // max distance the api allows
+            distanceInMeters = 40000
+        }
+        
+       
+        _ = YelpClient.sharedInstance.searchWithTerm(term, sort: sort, categories: categories, deals: deals, distance: distanceInMeters, completion: completion)
     }
+    
 }

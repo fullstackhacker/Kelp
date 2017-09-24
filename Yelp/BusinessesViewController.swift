@@ -64,6 +64,7 @@ class BusinessesViewController: UIViewController {
         filtersViewController.delegate = self
         filtersViewController.categoryStates = self.filterState["categories"] as? [String:Bool] ?? [String:Bool]()
         filtersViewController.deal = self.filterState["deal"] as? Bool ?? false
+        filtersViewController.currentDistance = self.filterState["distance"] as? Int ?? 3
      // Get the new view controller using segue.destinationViewController.
      // Pass the selected object to the new view controller.
      }
@@ -108,7 +109,10 @@ extension BusinessesViewController: FiltersViewControllerDelegate {
         // get deal only
         let dealsOnly = self.filterState["deal"] as! Bool
         
-        Business.searchWithTerm(term: "Restaurants", sort: nil, categories: categories, deals: dealsOnly) { (businesses, error) in
+        // get distance
+        let distance = self.filterState["distance"] as! Int
+        
+        Business.searchWithTerm(term: "Restaurants", sort: nil, categories: categories, deals: dealsOnly, distance: distance) { (businesses, error) in
             self.businesses = businesses ?? [Business]()
             self.businessTableView.reloadData()
         }
