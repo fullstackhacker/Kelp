@@ -11,6 +11,7 @@ import UIKit
 class BusinessesViewController: UIViewController {
     
     var businesses: [Business]! = []
+    var filterState: [String:AnyObject]! = [String:AnyObject]()
     
     @IBOutlet weak var businessTableView: UITableView!
     
@@ -61,6 +62,7 @@ class BusinessesViewController: UIViewController {
         let filtersNavigationController = segue.destination as! UINavigationController
         let filtersViewController = filtersNavigationController.topViewController as! FiltersViewController
         filtersViewController.delegate = self
+        filtersViewController.categoryStates = self.filterState["categories"] as? [String:Bool] ?? [String:Bool]()
      // Get the new view controller using segue.destinationViewController.
      // Pass the selected object to the new view controller.
      }
@@ -86,8 +88,20 @@ extension BusinessesViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension BusinessesViewController: FiltersViewControllerDelegate {
     func filtersViewController(filterViewController: FiltersViewController, didUpdateFilters filters: [String : AnyObject]) {
-        let categories = filters["categories"] as! [String]
-        print(categories)
+        self.filterState = filters
+        let filterCategories = self.filterState["categories"] as! [String:Bool]
+        let categories = filterCategories.reduce([], { (filterCategories: [String], categoryState) -> [String] in
+            let (key, value) = categoryState
+            if (value) {
+                var newFilterCategories = [String]()
+                newFilterCategories.append(contentsOf: filterCategories)
+                newFilterCategories.append(key)
+                return newFilterCategories
+            }
+            
+            return filterCategories
+        })
+        
         Business.searchWithTerm(term: "Restaurants", sort: nil, categories: categories, deals: nil) { (businesses, error) in
             self.businesses = businesses ?? [Business]()
             self.businessTableView.reloadData()

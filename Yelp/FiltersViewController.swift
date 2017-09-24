@@ -19,7 +19,7 @@ class FiltersViewController: UIViewController {
     weak var delegate: FiltersViewControllerDelegate?
 
     var categories: [Category] = []
-    var filterStates: [String: Bool] = [String: Bool]()
+    var categoryStates: [String: Bool] = [String: Bool]()
 
    
     override func viewDidLoad() {
@@ -42,22 +42,8 @@ class FiltersViewController: UIViewController {
         var updatedFilters: [String: AnyObject] = [String:AnyObject]()
         
         // add category filter
-        updatedFilters["categories"] = self.filterStates.reduce([], { (filterCategories: [String], categoryState) -> [String] in
-            let (key, value) = categoryState
-            if (value) {
-                var newFilterCategories = [String]()
-                newFilterCategories.append(contentsOf: filterCategories)
-                newFilterCategories.append(self.categories.first(where: { (category) -> Bool in
-                    return category.name == key
-                })?.code ?? "")
-                return newFilterCategories
-            }
-            
-            return filterCategories
-        }) as AnyObject
-        
-        print(delegate)
-        
+        updatedFilters["categories"] = self.categoryStates as AnyObject
+
         delegate?.filtersViewController?(filterViewController: self, didUpdateFilters: updatedFilters)
     }
 
@@ -260,7 +246,7 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource{
         let cell = self.categoriesTableView.dequeueReusableCell(withIdentifier: "SwitchCell") as! SwitchTableViewCell
         let category =  categories[indexPath.row]
         cell.category = category
-        cell.isOn = filterStates[category.name] ?? false
+        cell.isOn = categoryStates[category.code] ?? false
         cell.delegate = self
         return cell
     }
@@ -268,7 +254,7 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource{
 
 extension FiltersViewController: SwitchTableViewCellDelegate {
     func switchTableViewCell(switchTableViewCell: SwitchTableViewCell, didChangeValue value: Bool) {
-        self.filterStates.updateValue(value, forKey: switchTableViewCell.category.name)
+        self.categoryStates.updateValue(value, forKey: switchTableViewCell.category.code)
         self.categoriesTableView.reloadData()
     }
 }
