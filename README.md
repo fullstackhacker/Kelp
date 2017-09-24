@@ -2,10 +2,7 @@
 
 **Kelp** is a Yelp search app using the [Yelp API](http://www.yelp.com/developers/documentation/v2/search_api).
 
-Time spent: **X** hours spent in total
-Thursday: 3 hours
-Friday: 2 hours
-Saturday: 5 hours
+Time spent: **15** hours spent in total
 
 ## User Stories
 
