@@ -44,7 +44,11 @@ Here's a walkthrough of implemented user stories:
 
 
 ![](http://i.imgur.com/ePDMEZ0.gif)
+
+
 [Gif](http://i.imgur.com/ePDMEZ0.gif)
+
+
 <img src="http://i.imgur.com/ePDMEZ0.gif" alt="alt gif text" />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
