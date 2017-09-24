@@ -232,12 +232,11 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="hpt-cY-Iyh" firstAttribute="centerY" secondItem="oh9-EK-kGQ" secondAttribute="centerY" id="3JF-Hj-7wy"/>
-                                                <constraint firstItem="hpt-cY-Iyh" firstAttribute="centerX" secondItem="oh9-EK-kGQ" secondAttribute="centerX" id="LSM-fL-y4g"/>
+                                                <constraint firstItem="hpt-cY-Iyh" firstAttribute="centerX" secondItem="oh9-EK-kGQ" secondAttribute="centerX" id="vOy-d2-kf5"/>
+                                                <constraint firstItem="hpt-cY-Iyh" firstAttribute="centerY" secondItem="oh9-EK-kGQ" secondAttribute="centerY" id="z3I-bn-i1u"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="distanceCellView" destination="oh9-EK-kGQ" id="Un0-XW-hs3"/>
                                             <outlet property="distanceTextLabel" destination="hpt-cY-Iyh" id="BhQ-UU-2pt"/>
                                         </connections>
                                     </tableViewCell>

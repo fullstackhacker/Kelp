@@ -18,6 +18,12 @@ class BusinessesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let searchBar = UISearchBar()
+        searchBar.sizeToFit()
+        searchBar.delegate = self
+        searchBar.placeholder = "Find Restaurants"
+        navigationItem.titleView = searchBar
+        
         businessTableView.delegate = self
         businessTableView.dataSource = self
         businessTableView.rowHeight = UITableViewAutomaticDimension
@@ -70,7 +76,41 @@ class BusinessesViewController: UIViewController {
      // Pass the selected object to the new view controller.
      }
     
-    
+    func reloadSearch() {
+        // get search term
+        let searchTerm = self.filterState["term"] as? String ?? ""
+        
+        // get categories
+        let filterCategories = self.filterState["categories"] as? [String:Bool] ?? [String:Bool]()
+        let categories = filterCategories.reduce([], { (filterCategories: [String], categoryState) -> [String] in
+            let (key, value) = categoryState
+            if (value) {
+                var newFilterCategories = [String]()
+                newFilterCategories.append(contentsOf: filterCategories)
+                newFilterCategories.append(key)
+                return newFilterCategories
+            }
+            
+            return filterCategories
+        })
+        
+        // get deal only
+        let dealsOnly = self.filterState["deal"] as? Bool ?? false
+        
+        // get distance
+        let distance = self.filterState["distance"] as? Int ?? 3
+        
+        // get sorts
+        let yelpSortModes = [YelpSortMode.bestMatched,
+                             YelpSortMode.distance,
+                             YelpSortMode.highestRated]
+        let sort = yelpSortModes[self.filterState["sort"] as? Int ?? 0]
+        
+        Business.searchWithTerm(term: searchTerm, sort: sort, categories: categories, deals: dealsOnly, distance: distance) { (businesses, error) in
+            self.businesses = businesses ?? [Business]()
+            self.businessTableView.reloadData()
+        }
+    }
 }
 
 extension BusinessesViewController: UITableViewDelegate, UITableViewDataSource {
@@ -92,36 +132,25 @@ extension BusinessesViewController: UITableViewDelegate, UITableViewDataSource {
 extension BusinessesViewController: FiltersViewControllerDelegate {
     func filtersViewController(filterViewController: FiltersViewController, didUpdateFilters filters: [String : AnyObject]) {
         self.filterState = filters
+        self.reloadSearch()
+    }
+}
+
+extension BusinessesViewController: UISearchBarDelegate {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = true
+        searchBar.enablesReturnKeyAutomatically = false
         
-        // get categories
-        let filterCategories = self.filterState["categories"] as! [String:Bool]
-        let categories = filterCategories.reduce([], { (filterCategories: [String], categoryState) -> [String] in
-            let (key, value) = categoryState
-            if (value) {
-                var newFilterCategories = [String]()
-                newFilterCategories.append(contentsOf: filterCategories)
-                newFilterCategories.append(key)
-                return newFilterCategories
-            }
-            
-            return filterCategories
-        })
-        
-        // get deal only
-        let dealsOnly = self.filterState["deal"] as! Bool
-        
-        // get distance
-        let distance = self.filterState["distance"] as! Int
-        
-        // get sorts
-        let yelpSortModes = [YelpSortMode.bestMatched,
-                             YelpSortMode.distance,
-                             YelpSortMode.highestRated]
-        let sort = yelpSortModes[self.filterState["sort"] as? Int ?? 0]
-        
-        Business.searchWithTerm(term: "Restaurants", sort: sort, categories: categories, deals: dealsOnly, distance: distance) { (businesses, error) in
-            self.businesses = businesses ?? [Business]()
-            self.businessTableView.reloadData()
-        }
+    }
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.filterState["term"] = searchBar.text as AnyObject
+        self.reloadSearch()
+        searchBar.showsCancelButton = false
+        searchBar.endEditing(true)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.endEditing(true)
+        searchBar.showsCancelButton = false
     }
 }
