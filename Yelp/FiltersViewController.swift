@@ -8,6 +8,13 @@
 
 import UIKit
 
+enum FiltersSections : String {
+    case Categories = "Categories"
+    case Sort = "Sort"
+    case Distance = "Distance"
+    case Deals = "Deals"
+}
+
 @objc protocol FiltersViewControllerDelegate {
     @objc optional func filtersViewController(filterViewController: FiltersViewController, didUpdateFilters filters: [String:AnyObject])
 }
@@ -17,7 +24,14 @@ class FiltersViewController: UIViewController {
     @IBOutlet weak var categoriesTableView: UITableView!
     
     weak var delegate: FiltersViewControllerDelegate?
+    
+    let sections: [FiltersSections] = [.Categories,
+                                       .Sort,
+                                       .Distance,
+                                       .Deals]
 
+    var displayedCategories: ArraySlice<Category> = []
+    var showingAllCategories = false
     var categories: [Category] = []
     var categoryStates: [String: Bool] = [String: Bool]()
 
@@ -25,6 +39,7 @@ class FiltersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.categories = getCategories()
+        self.displayedCategories = self.categories.prefix(3)
  
         self.categoriesTableView.delegate = self
         self.categoriesTableView.dataSource = self
@@ -238,17 +253,52 @@ class FiltersViewController: UIViewController {
 extension FiltersViewController: UITableViewDelegate, UITableViewDataSource{
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.categories.count
+        if sections[section] == .Categories {
+            return self.displayedCategories.count + 1
+        }
+        return 0
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sections[section].rawValue
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        if sections[indexPath.section] == .Categories {
+            if indexPath.row >= self.displayedCategories.count {
+                let cell = self.categoriesTableView.dequeueReusableCell(withIdentifier: "ShowMoreCell") as! ShowMoreTableViewCell
+                cell.showingAll = showingAllCategories
+                return cell
+            } else {
+                let cell = self.categoriesTableView.dequeueReusableCell(withIdentifier: "SwitchCell") as! SwitchTableViewCell
+                let category =  displayedCategories[indexPath.row]
+                cell.category = category
+                cell.isOn = categoryStates[category.code] ?? false
+                cell.delegate = self
+                return cell
+            }
+        }
         
-        let cell = self.categoriesTableView.dequeueReusableCell(withIdentifier: "SwitchCell") as! SwitchTableViewCell
-        let category =  categories[indexPath.row]
-        cell.category = category
-        cell.isOn = categoryStates[category.code] ?? false
-        cell.delegate = self
-        return cell
+        return UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if sections[indexPath.section] == .Categories {
+            if indexPath.row >= self.displayedCategories.count {
+                showingAllCategories = !showingAllCategories
+                var count = 3
+                if showingAllCategories {
+                    count = categories.count
+                }
+                displayedCategories = categories.prefix(count)
+                categoriesTableView.reloadData()
+            }
+        }
     }
 }
 

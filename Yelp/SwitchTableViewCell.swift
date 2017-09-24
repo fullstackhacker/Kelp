@@ -28,11 +28,7 @@ class SwitchTableViewCell: UITableViewCell {
     
     var isOn: Bool! {
         didSet {
-            print("------")
-            print("name", category.name)
-            print("setter ",isOn)
             settingSwitch.setOn(isOn, animated: false)
-            print("switch state:", settingSwitch.isOn)
         }
     }
 
