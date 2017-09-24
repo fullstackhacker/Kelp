@@ -154,14 +154,19 @@ extension BusinessesViewController: UISearchBarDelegate {
     }
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         self.filterState["term"] = searchBar.text as AnyObject
+        self.filterState["offset"] = nil
         self.reloadSearch()
         searchBar.showsCancelButton = false
         searchBar.endEditing(true)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+        self.filterState["term"] = "" as AnyObject
+        self.filterState["offset"] = nil
         searchBar.endEditing(true)
         searchBar.showsCancelButton = false
+        self.reloadSearch()
     }
 }
 
