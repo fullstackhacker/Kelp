@@ -38,12 +38,15 @@ class FiltersViewController: UIViewController {
     var categories: [Category] = []
     var categoryStates: [String: Bool] = [String: Bool]()
     
-    
     // distance related prefs
     var distances: [Int] = [3, 5, 10, 25]
     var currentDistance: Int = 3
     var distanceDropDownOpen: Bool = false
     
+    // sort related prefs
+    var sorts: [String] = ["Best Match", "Distance", "Highest Rated"]
+    var currentSortSelectionIndex: Int = 0
+    var sortDropDownOpen: Bool = false
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,6 +77,9 @@ class FiltersViewController: UIViewController {
         // add distance filter
         updatedFilters["distance"] = self.currentDistance as AnyObject
 
+        // add sorts filter
+        updatedFilters["sort"] = self.currentSortSelectionIndex as AnyObject
+        
         delegate?.filtersViewController?(filterViewController: self, didUpdateFilters: updatedFilters)
     }
 
@@ -282,6 +288,14 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource{
                 return 1
             }
         }
+        if sections[section] == .Sort {
+            if sortDropDownOpen {
+                return sorts.count
+            }
+            else {
+                return 1
+            }
+        }
         return 0
     }
     
@@ -321,11 +335,19 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource{
             let cell = self.categoriesTableView.dequeueReusableCell(withIdentifier: "DistanceCell") as! DistanceTableViewCell
             if distanceDropDownOpen {
                 cell.distance = self.distances[indexPath.row]
-                cell.currentlySelected = self.currentDistance == cell.distance
             }
             else {
                 cell.distance = self.currentDistance
-                cell.currentlySelected = false
+            }
+            return cell
+        }
+        else if sections[indexPath.section] == FiltersSections.Sort {
+            let cell = self.categoriesTableView.dequeueReusableCell(withIdentifier: "DistanceCell") as! SortTableViewCell
+            if sortDropDownOpen {
+                cell.sort = self.sorts[indexPath.row]
+            }
+            else {
+                cell.sort = self.sorts[self.currentSortSelectionIndex]
             }
             return cell
         }
@@ -348,6 +370,12 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource{
             distanceDropDownOpen = !distanceDropDownOpen
             if !distanceDropDownOpen { // picked a new one
                 self.currentDistance = self.distances[indexPath.row]
+            }
+        }
+        if sections[indexPath.section] == FiltersSections.Sort {
+            sortDropDownOpen = !sortDropDownOpen
+            if !sortDropDownOpen { // picked a new one
+                self.currentSortSelectionIndex = indexPath.row
             }
         }
         categoriesTableView.reloadData()

@@ -241,6 +241,29 @@
                                             <outlet property="distanceTextLabel" destination="hpt-cY-Iyh" id="BhQ-UU-2pt"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SortCell" rowHeight="71" id="ghx-8P-hZS" customClass="SortTableViewCell" customModule="Yelp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="209" width="375" height="71"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ghx-8P-hZS" id="xd0-Tr-6T3">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="70.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sort" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E72-Oo-NjD">
+                                                    <rect key="frame" x="165.5" y="21" width="44" height="29"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="E72-Oo-NjD" firstAttribute="centerX" secondItem="xd0-Tr-6T3" secondAttribute="centerX" id="Tyn-wk-uKe"/>
+                                                <constraint firstItem="E72-Oo-NjD" firstAttribute="centerY" secondItem="xd0-Tr-6T3" secondAttribute="centerY" id="wSE-u8-Sx8"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="sortTextLabel" destination="E72-Oo-NjD" id="fnt-Cs-8if"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </prototypes>
                             </tableView>
                         </subviews>

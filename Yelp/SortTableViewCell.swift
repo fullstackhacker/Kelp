@@ -1,25 +1,22 @@
 //
-//  DistanceTableViewCell.swift
+//  SortTableViewCell.swift
 //  Yelp
 //
-//  Created by Mushaheed Kapadia on 9/23/17.
+//  Created by Mushaheed Kapadia on 9/24/17.
 //  Copyright © 2017 Timothy Lee. All rights reserved.
 //
 
 import UIKit
 
-class DistanceTableViewCell: UITableViewCell {
+class SortTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var sortTextLabel: UILabel!
     
-    @IBOutlet weak var distanceCellView: DistanceTableViewCell!
-    @IBOutlet weak var distanceTextLabel: UILabel!
-    
-    var distance: Int! {
+    var sort: String! {
         didSet {
-            distanceTextLabel.text = "\(distance!) miles"
+            sortTextLabel.text = sort
         }
     }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -91,7 +91,7 @@ class Business: NSObject {
     class func searchWithTerm(term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, distance: Int?, completion: @escaping ([Business]?, Error?) -> Void) -> Void {
         var distanceInMeters = 0
         if distance != nil {
-            distanceInMeters = distance! * 1609  // distance in meters.. client doesn't support this?
+            distanceInMeters = distance! * 1609
         }
 
         if distanceInMeters > 40000 {   // max distance the api allows
