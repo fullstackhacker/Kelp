@@ -29,7 +29,10 @@ class FiltersViewController: UIViewController {
                                        .Sort,
                                        .Distance,
                                        .Deals]
-
+    // deal related prfs
+    var deal: Bool = false
+    
+    // category related prefs
     var displayedCategories: ArraySlice<Category> = []
     var showingAllCategories = false
     var categories: [Category] = []
@@ -58,6 +61,9 @@ class FiltersViewController: UIViewController {
         
         // add category filter
         updatedFilters["categories"] = self.categoryStates as AnyObject
+        
+        // add deal filter
+        updatedFilters["deal"] = self.deal as AnyObject
 
         delegate?.filtersViewController?(filterViewController: self, didUpdateFilters: updatedFilters)
     }
@@ -256,6 +262,9 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource{
         if sections[section] == .Categories {
             return self.displayedCategories.count + 1
         }
+        if sections[section] == FiltersSections.Deals {
+            return 1
+        }
         return 0
     }
     
@@ -279,9 +288,17 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource{
                 let category =  displayedCategories[indexPath.row]
                 cell.category = category
                 cell.isOn = categoryStates[category.code] ?? false
+                cell.deal = false
                 cell.delegate = self
                 return cell
             }
+        }
+        else if sections[indexPath.section] == FiltersSections.Deals {
+            let cell = self.categoriesTableView.dequeueReusableCell(withIdentifier: "SwitchCell") as! SwitchTableViewCell
+            cell.deal = true
+            cell.isOn = self.deal
+            cell.delegate = self
+            return cell
         }
         
         return UITableViewCell()
@@ -304,7 +321,12 @@ extension FiltersViewController: UITableViewDelegate, UITableViewDataSource{
 
 extension FiltersViewController: SwitchTableViewCellDelegate {
     func switchTableViewCell(switchTableViewCell: SwitchTableViewCell, didChangeValue value: Bool) {
-        self.categoryStates.updateValue(value, forKey: switchTableViewCell.category.code)
+        if switchTableViewCell.deal {
+            print(self.deal, value)
+            self.deal = value
+        } else {
+            self.categoryStates.updateValue(value, forKey: switchTableViewCell.category.code)
+        }
         self.categoriesTableView.reloadData()
     }
 }

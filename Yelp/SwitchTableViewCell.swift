@@ -31,6 +31,14 @@ class SwitchTableViewCell: UITableViewCell {
             settingSwitch.setOn(isOn, animated: false)
         }
     }
+    
+    var deal: Bool! {
+        didSet {
+            if deal {
+                switchNameLabel.text = "Deals Only"
+            }
+        }
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()

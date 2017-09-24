@@ -63,6 +63,7 @@ class BusinessesViewController: UIViewController {
         let filtersViewController = filtersNavigationController.topViewController as! FiltersViewController
         filtersViewController.delegate = self
         filtersViewController.categoryStates = self.filterState["categories"] as? [String:Bool] ?? [String:Bool]()
+        filtersViewController.deal = self.filterState["deal"] as? Bool ?? false
      // Get the new view controller using segue.destinationViewController.
      // Pass the selected object to the new view controller.
      }
@@ -89,6 +90,8 @@ extension BusinessesViewController: UITableViewDelegate, UITableViewDataSource {
 extension BusinessesViewController: FiltersViewControllerDelegate {
     func filtersViewController(filterViewController: FiltersViewController, didUpdateFilters filters: [String : AnyObject]) {
         self.filterState = filters
+        
+        // get categories
         let filterCategories = self.filterState["categories"] as! [String:Bool]
         let categories = filterCategories.reduce([], { (filterCategories: [String], categoryState) -> [String] in
             let (key, value) = categoryState
@@ -102,7 +105,10 @@ extension BusinessesViewController: FiltersViewControllerDelegate {
             return filterCategories
         })
         
-        Business.searchWithTerm(term: "Restaurants", sort: nil, categories: categories, deals: nil) { (businesses, error) in
+        // get deal only
+        let dealsOnly = self.filterState["deal"] as! Bool
+        
+        Business.searchWithTerm(term: "Restaurants", sort: nil, categories: categories, deals: dealsOnly) { (businesses, error) in
             self.businesses = businesses ?? [Business]()
             self.businessTableView.reloadData()
         }
